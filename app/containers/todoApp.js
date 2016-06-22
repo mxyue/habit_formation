@@ -56,9 +56,17 @@ class TodoApp extends  Component {
                          dispatch(switchMode(false));
                          dispatch(resetMarks())
                     }}
+                    inputValue = {inputValue}
+                    onAddClick={() => {
+                        dispatch(addTodo(inputValue));
+                        dispatch(newInputValue(''))
+                    }}
                 />
                 <AddTodo
-                    onAddClick={content => dispatch(addTodo(content))}
+                    onAddClick={() => {
+                        dispatch(addTodo(inputValue));
+                        dispatch(newInputValue(''))
+                    }}
                     setNewValue={(content) =>{
                         dispatch(newInputValue(content))
                         }

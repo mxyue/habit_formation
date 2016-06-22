@@ -13,19 +13,19 @@ export default class AddTodo extends  Component{
     }
     render(){
         return(
-            <View style={{flexDirection: 'row' }}>
+            <View style={styles.input_box}>
                 <TextInput onChangeText={text=>this.setValue(text)}
                            value={this.props.inputValue}
-                           style={{flex: 4, height: 35,marginTop: 5}}
+                           onSubmitEditing = {this.handleClick }
+                           underlineColorAndroid='transparent'
+                           style={{flex: 4, height: 35}}
                 />
-                <TouchableOpacity onPress={this.handleClick } style={styles.addBtn} >
-                    <View ><Text style={{color: '#fff'}}>添加</Text></View>
-                </TouchableOpacity>
             </View>
+
         )
     }
     handleClick=()=> {
-        this.props.onAddClick(this.props.inputValue)
+        this.props.onAddClick();
         this.setValue('')
     };
     setValue=(text)=>{
@@ -34,7 +34,14 @@ export default class AddTodo extends  Component{
 }
 
 const styles = StyleSheet.create({
-
+    input_box: {
+        backgroundColor: '#efefef',
+        borderWidth: 1,
+        borderColor: '#3f3f3f',
+        borderRadius: 3,
+        margin: 5,
+        paddingLeft: 3,
+    },
     addBtn: {
         flex: 1,
         alignItems: 'center',

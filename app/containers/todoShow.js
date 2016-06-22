@@ -9,7 +9,7 @@ import {
     View,
     TouchableOpacity,
     TextInput,
-    Slider
+    Slider,
 } from 'react-native'
 
 
@@ -22,14 +22,15 @@ export default class TodoShow extends  Component{
             sliderValue: this.props.todo.intervalDay
         }
     }
+    componentDidUpdate(){
+        this.props.setTodoContent(this.state.inputValue)
+    }
 
     navBack=()=>{
         this.props.navigator.pop()
     };
 
-    onClickSave=()=>{
-        this.props.setTodoContent(this.state.inputValue)
-    }
+
     changeInputText=(text)=>{
         this.setState({inputValue: text})
     }
@@ -38,8 +39,8 @@ export default class TodoShow extends  Component{
         const {todo,inputValue } = this.state;
 
         return  (
-            <View>
-                <View style={styles.backGround} >
+            <View style={{backgroundColor: '#fafafa',flex: 1, }}>
+                <View style={styles.header} >
                     <TouchableOpacity style={styles.backBtn}
                                       onPress={this.navBack}
                     >
@@ -47,32 +48,36 @@ export default class TodoShow extends  Component{
                     </TouchableOpacity>
 
                 </View>
-                <View style={{flexDirection: 'row'}} >
-                    <TextInput
-                        onChangeText={(content)=> this.changeInputText(content)}
-                        value={ inputValue }
-                        style={{flex: 4, height: 35,marginTop: 5 }}
-                    />
-                    <TouchableOpacity
-                        onPress={this.onClickSave}
-                    ><Text>保存</Text></TouchableOpacity>
-                </View>
-                <View style={{flex: 1, flexDirection: 'row'}} >
-                    <TouchableOpacity
-                    ><Text>间隔</Text></TouchableOpacity>
-                    <Text>,记次,计时</Text>
-                </View>
-                <View>
-                    <Text >
-                        原来间隔{todo.intervalDay}天,当前间隔 {this.state.sliderValue}天
-                    </Text>
-                    <Slider
-                        value={todo.intervalDay}
-                        step={1}
-                        maximumValue={30}
-                        onValueChange={(value) => this.setState({sliderValue: value})}
-                        onSlidingComplete={(value) => this.props.setIntervalDay(value)}
-                    />
+                <View style={styles.container}>
+                    <View style={{borderWidth: 1, borderRadius: 3, borderColor: '#efefef', margin: 4}} >
+                        <TextInput
+                            onChangeText={(content)=> {
+                                this.changeInputText(content);
+                                this.props.setTodoContent(content)
+                            }}
+                            value={ inputValue }
+                            style={{flex: 4, height: 35,marginTop: 5 }}
+                        />
+
+                    </View>
+                    <View style={{flex: 1, flexDirection: 'row',height: 30}} >
+                        <TouchableOpacity
+                        ><Text>间隔</Text></TouchableOpacity>
+                        <Text>,记次,计时</Text>
+                    </View>
+                    <View>
+                        <Text >
+                            原来间隔{todo.intervalDay}天,当前间隔 {this.state.sliderValue}天
+                        </Text>
+                        <Slider
+                            value={todo.intervalDay}
+                            step={1}
+                            maximumValue={30}
+                            onValueChange={(value) => this.setState({sliderValue: value})}
+                            onSlidingComplete={(value) => this.props.setIntervalDay(value)}
+                        />
+                    </View>
+
                 </View>
 
             </View>
@@ -83,8 +88,7 @@ export default class TodoShow extends  Component{
 
 const styles = StyleSheet.create({
 
-    backGround: {
-        flex: 1,
+    header: {
         alignItems: 'flex-end',
         flexDirection: 'row',
         paddingTop: (Platform.OS == 'ios' ) ? 10 : 0,
@@ -93,8 +97,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
 
     },
+    container:{
+        backgroundColor: '#fafafa',
+        paddingLeft: 5,
+        paddingRight: 5
+    },
     backBtn:{
         flex: 1,
+        paddingTop: 7,
         alignSelf: 'flex-start'
     },
 
