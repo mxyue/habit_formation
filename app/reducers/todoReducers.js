@@ -35,7 +35,6 @@ function todos(state = [], action) {
     switch (action.type) {
         case ADD_TODO:
             return [ {
-                id: ()=>{Date.now()},
                 content: action.content,
                 completed: false,
                 beMark: false,
@@ -43,7 +42,7 @@ function todos(state = [], action) {
                 time: 0,
                 dateMode: 'day',
                 intervalDay: 0,
-                createdAt: ()=>{Date.now()}
+                createdAt: Date.now()
             },...state];
         case MARK_TODO:
             return [

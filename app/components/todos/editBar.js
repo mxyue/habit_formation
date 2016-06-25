@@ -16,38 +16,42 @@ export default class EditBar extends Component{
     render(){
         const {editMode,onClickRemove,onClickCancel,inputValue,onAddClick} = this.props
         return(
-            <View style={{flexDirection: 'row' }}>
+            <View >
                 <View style={styles.backGround} >
-                    {this.cancelBtn(editMode,onClickCancel)}
-                    {this.rightBtn(editMode,onClickRemove,inputValue)}
+                    <View>{this.leftBtn(editMode,onClickCancel)}</View>
+                    <View>{this.rightBtn(editMode,onClickRemove,inputValue)}</View>
                 </View>
             </View>
         )
     }
-    cancelBtn=(editMode,onClickCancel)=>{
+    leftBtn=(editMode,onClickCancel)=>{
         if(editMode){
             return(
-                <TouchableOpacity style={styles.cancelBtn} onPress={()=> onClickCancel()} >
-                    <Text style={{marginRight: 5}} >{editMode ? '取消' : ''}</Text>
+                <TouchableOpacity onPress={()=> onClickCancel()} >
+                    <Text style={{color: '#fff'}} >{'取消'}</Text>
                 </TouchableOpacity>
             )
         }else{
-            return null
+            return (
+                <TouchableOpacity onPress={()=> this.props.openDrawer()} >
+                    <Text style={{color: '#fff'}} >{ '三'}</Text>
+                </TouchableOpacity>
+            )
         }
     }
     rightBtn=(editMode,onClickRemove,inputValue ='')=>{
         if(editMode){
             return(
-                <TouchableOpacity style={styles.deleteBtn}
+                <TouchableOpacity
                     onPress={()=>onClickRemove()}
                 >
-                    <Text style={{marginRight: 5}} >{editMode ? '删除' : ''}</Text>
+                    <Text style={{color: '#fff'}} >{editMode ? '删除' : ''}</Text>
                 </TouchableOpacity>
             )
         }else if( inputValue.length > 0){
             return(
                 <TouchableOpacity onPress={this.props.onAddClick } style={styles.addBtn} >
-                    <View ><Text style={{color: '#fff',marginRight: 5}}>添加</Text></View>
+                    <View ><Text style={{color: '#fff'}}>添加</Text></View>
                 </TouchableOpacity>
             )
         }else{
@@ -59,20 +63,15 @@ export default class EditBar extends Component{
 const styles = StyleSheet.create({
 
     backGround: {
-        flex: 1,
-        alignItems: 'flex-end',
         paddingTop: (Platform.OS === 'ios') ? 10 : 0,
         height: 40,
         backgroundColor: '#00bcd4',
-        justifyContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingLeft: 10,
+        paddingRight: 10
+    },
 
-    },
-    cancelBtn:{
-        flex: 1,
-        alignSelf: 'flex-start'
-    },
-    deleteBtn:{
-        flex: 1,
-        alignSelf: 'flex-end'
-    }
+
 });

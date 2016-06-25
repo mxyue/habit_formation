@@ -18,7 +18,7 @@ export default class AddTodo extends  Component{
                            value={this.props.inputValue}
                            onSubmitEditing = {this.handleClick }
                            underlineColorAndroid='transparent'
-                           style={{flex: 4, height: 35}}
+                           style={{flex: 4, height: 45}}
                 />
             </View>
 
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     input_box: {
         backgroundColor: '#efefef',
         borderWidth: 1,
-        borderColor: '#3f3f3f',
+        borderColor: '#9f9f9f',
         borderRadius: 3,
         margin: 5,
         paddingLeft: 3,

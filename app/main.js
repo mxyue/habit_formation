@@ -36,7 +36,7 @@ export default class Main extends Component {
                 <Navigator
                     initialRoute={{ name: defaultName, component: defaultComponent }}
                     configureScene={(route) => {
-                                            return Navigator.SceneConfigs.HorizontalSwipeJump;
+                                            return Navigator.SceneConfigs.FadeAndroid;
                                       }}
                     renderScene={(route, navigator) => {
                         let Component = route.component;

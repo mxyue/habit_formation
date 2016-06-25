@@ -7,33 +7,60 @@ import  {
     Text,
     TouchableOpacity,
     ScrollView,
+    StyleSheet,
 } from 'react-native';
-import ScrollableTabView, { DefaultTabBar, ScrollableTabBar, } from 'react-native-scrollable-tab-view';
-import TodoApp from './todoApp';
-import EditBar from '../components/todos/editBar'
-import BottomTabBar from '../components/base/bottomTabBar'
 
-export default class DefaultPage extends  Component {
-    render(){
-        return(
-            <ScrollableTabView initialPage={0} renderTabBar={() => <BottomTabBar />}
-                               tabBarBackgroundColor="#efefef"
-                               tabBarPosition='overlayBottom'
+import Drawer from 'react-native-drawer'
+import SlideMenu from './slideMenu'
+import ScrollTabPage from './scrollTabPage'
+import TransparentLayer from '../components/base/transparentLayer'
+
+
+export default class DefaultPage extends Component {
+    constructor(props){
+        super(props)
+        this.state={
+            drawerOpen: false
+        }
+    }
+    openDrawer = ()=>{
+        this._drawer.open();
+        this.setState({drawerOpen: true })
+    }
+    onDrawerClose = ()=>{
+        this.setState({drawerOpen: false })
+    }
+
+
+    render() {
+        var tLayer = this.state.drawerOpen ? <TransparentLayer/> : null
+
+        return (
+            <Drawer
+                ref={(ref) => this._drawer = ref}
+                open={this.state.drawerOpen}
+                type="overlay"
+                content={<SlideMenu />}
+                tapToClose={true}
+                openDrawerOffset={200}
+                onClose={this.onDrawerClose}
             >
-                <TodoApp navigator={this.props.navigator} />
-                <ScrollView >
-                    <EditBar />
-                    <View>
-                        <TouchableOpacity
-                            activeOpacity={0.8}
-                        >
-                            <View >
-                                <Text style={{color: 'white', fontSize: 20,fontWeight: 'bold'}}>退 出</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                </ScrollView>
-            </ScrollableTabView>
+                <ScrollTabPage
+                    navigator={this.props.navigator}
+                    openDrawer = {this.openDrawer}
+                />
+                {tLayer}
+            </Drawer>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    drawerOpen:{
+        backgroundColor: 'black',
+        opacity: 0.7,
+    },
+    drawerClose: {
+
+    }
+});

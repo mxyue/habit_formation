@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {
     View,
+    Text,
+    Dimensions
 } from 'react-native';
 import { connect } from 'react-redux'
 import { addTodo, completeTodo,
@@ -23,6 +25,7 @@ import AddTodo from '../components/todos/addTodo'
 import TodoList from '../components/todos/todoList'
 import TodoShow from './todoShow'
 var dispatch;
+import TransparentLayer from '../components/base/transparentLayer'
 
 class TodoApp extends  Component {
     constructor(props) {
@@ -46,7 +49,8 @@ class TodoApp extends  Component {
         const {  visibleTodos,inputValue,editMode } = this.props;
         return (
                 <View style={{flex:1, backgroundColor: '#fff'}}>
-                <EditBar
+
+                    <EditBar
                     editMode={editMode}
                     onClickRemove={()=>{
                         dispatch(removeTodo());
@@ -61,6 +65,7 @@ class TodoApp extends  Component {
                         dispatch(addTodo(inputValue));
                         dispatch(newInputValue(''))
                     }}
+                    openDrawer={()=> this.props.openDrawer()}
                 />
                 <AddTodo
                     onAddClick={() => {
@@ -91,7 +96,7 @@ class TodoApp extends  Component {
                         }
                     }
                 />
-            </View>
+                </View>
         )
     }
 }

@@ -11,7 +11,7 @@ import {
     TextInput,
     Slider,
 } from 'react-native'
-
+import {fTimestamp} from '../components/helpers/timeFormat'
 
 export default class TodoShow extends  Component{
     constructor(props){
@@ -37,6 +37,7 @@ export default class TodoShow extends  Component{
 
     render(){
         const {todo,inputValue } = this.state;
+        console.log(todo)
 
         return  (
             <View style={{backgroundColor: '#fafafa',flex: 1, }}>
@@ -44,7 +45,7 @@ export default class TodoShow extends  Component{
                     <TouchableOpacity style={styles.backBtn}
                                       onPress={this.navBack}
                     >
-                        <Text style={{marginLeft: 5}} >返回</Text>
+                        <Text style={{marginLeft: 10}} >返回</Text>
                     </TouchableOpacity>
 
                 </View>
@@ -56,14 +57,15 @@ export default class TodoShow extends  Component{
                                 this.props.setTodoContent(content)
                             }}
                             value={ inputValue }
-                            style={{flex: 4, height: 35,marginTop: 5 }}
+                            style={{flex: 4, height: 45,marginTop: 5 }}
                         />
 
                     </View>
                     <View style={{flex: 1, flexDirection: 'row',height: 30}} >
                         <TouchableOpacity
                         ><Text>间隔</Text></TouchableOpacity>
-                        <Text>,记次,计时</Text>
+
+                        <Text>,创建时间: { fTimestamp(todo.createdAt)}</Text>
                     </View>
                     <View>
                         <Text >
@@ -99,8 +101,8 @@ const styles = StyleSheet.create({
     },
     container:{
         backgroundColor: '#fafafa',
-        paddingLeft: 5,
-        paddingRight: 5
+        paddingLeft: 10,
+        paddingRight: 10
     },
     backBtn:{
         flex: 1,
