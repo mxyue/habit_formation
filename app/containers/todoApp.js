@@ -46,7 +46,7 @@ class TodoApp extends  Component {
         })
     };
     render() {
-        const {  visibleTodos,inputValue,editMode } = this.props;
+        const {  visibleTodos,inputValue,editMode,visibilityFilter } = this.props;
         return (
                 <View style={{flex:1, backgroundColor: '#fff'}}>
 
@@ -66,6 +66,7 @@ class TodoApp extends  Component {
                         dispatch(newInputValue(''))
                     }}
                     openDrawer={()=> this.props.openDrawer()}
+                    visibilityFilter={visibilityFilter}
                 />
                 <AddTodo
                     onAddClick={() => {
@@ -109,15 +110,13 @@ function selectTodos(todos, filter) {
             return todos.filter(todo => todo.completed);
         case VisibilityFilters.SHOW_ACTIVE:
             return todos.filter(todo => !todo.completed);
-        case VisibilityFilters.CURRENT_TODOS:
+        case VisibilityFilters.TODAY_TODOS:
+            var nowDate = (new Date()).setHours(0,0,0,0);
             return todos.filter(todo => {
-
+                return (todo.initialDate == nowDate || (nowDate - todo.initialDate)%(todo.intervalDay)==0)  && !todo.completed
             })
     }
 }
-//function selectOnTodo(todos){
-//    todos.filter(todo=> todo.switchValue).map(todo=> todo.id)
-//}
 
 
 

@@ -74,6 +74,7 @@ export default class TodoShow extends  Component{
                         <Slider
                             value={todo.intervalDay}
                             step={1}
+                            minimumValue={1}
                             maximumValue={30}
                             onValueChange={(value) => this.setState({sliderValue: value})}
                             onSlidingComplete={(value) => this.props.setIntervalDay(value)}

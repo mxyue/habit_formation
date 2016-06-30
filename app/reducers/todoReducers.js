@@ -19,10 +19,10 @@ import {
     EDIT_INPUT_VALUE,
     SET_INTERVAL_DAY,
     VisibilityFilters } from '../actions/todoActions';
-const { SHOW_ALL } = VisibilityFilters;
+const { TODAY_TODOS } = VisibilityFilters;
 import {filterMarkTodos,resetMarks,theDayTodos} from './handles/todoHandle'
 
-function visibilityFilter(state = SHOW_ALL, action) {
+function visibilityFilter(state = TODAY_TODOS, action) {
     switch (action.type) {
         case SET_VISIBILITY_FILTER:
             return action.filter;
@@ -41,8 +41,9 @@ function todos(state = [], action) {
                 switchValue: false,
                 time: 0,
                 dateMode: 'day',
-                intervalDay: 0,
-                createdAt: Date.now()
+                intervalDay: 1,
+                createdAt: Date.now(),
+                initialDate: (new Date()).setHours(0,0,0,0)
             },...state];
         case MARK_TODO:
             return [

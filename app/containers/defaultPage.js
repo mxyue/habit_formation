@@ -9,12 +9,15 @@ import  {
     ScrollView,
     StyleSheet,
 } from 'react-native';
-
+import { connect } from 'react-redux'
 import Drawer from 'react-native-drawer'
 import SlideMenu from './slideMenu'
 import ScrollTabPage from './scrollTabPage'
 import TransparentLayer from '../components/base/transparentLayer'
-
+var dispatch;
+import {
+    setVisibilityFilter
+} from '../actions/todoActions'
 
 export default class DefaultPage extends Component {
     constructor(props){
@@ -22,6 +25,7 @@ export default class DefaultPage extends Component {
         this.state={
             drawerOpen: false
         }
+        dispatch = this.props.dispatch
     }
     openDrawer = ()=>{
         this._drawer.open();
@@ -40,7 +44,12 @@ export default class DefaultPage extends Component {
                 ref={(ref) => this._drawer = ref}
                 open={this.state.drawerOpen}
                 type="overlay"
-                content={<SlideMenu />}
+                content={<SlideMenu
+                    setVisibilityFilter = {(filter)=> {
+                        this.props.dispatch(setVisibilityFilter(filter));
+                        this.onDrawerClose()
+                    }}
+                />}
                 tapToClose={true}
                 openDrawerOffset={200}
                 onClose={this.onDrawerClose}
@@ -55,6 +64,8 @@ export default class DefaultPage extends Component {
     }
 }
 
+
+
 const styles = StyleSheet.create({
     drawerOpen:{
         backgroundColor: 'black',
@@ -64,3 +75,5 @@ const styles = StyleSheet.create({
 
     }
 });
+
+export default connect()(DefaultPage);

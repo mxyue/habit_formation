@@ -14,11 +14,12 @@ export default class EditBar extends Component{
         super(prop)
     }
     render(){
-        const {editMode,onClickRemove,onClickCancel,inputValue,onAddClick} = this.props
+        const {editMode,onClickRemove,onClickCancel,inputValue,visibilityFilter,onAddClick} = this.props
         return(
             <View >
                 <View style={styles.backGround} >
                     <View>{this.leftBtn(editMode,onClickCancel)}</View>
+                    <View><Text>{visibilityFilter}</Text></View>
                     <View>{this.rightBtn(editMode,onClickRemove,inputValue)}</View>
                 </View>
             </View>
@@ -34,7 +35,7 @@ export default class EditBar extends Component{
         }else{
             return (
                 <TouchableOpacity onPress={()=> this.props.openDrawer()} >
-                    <Text style={{color: '#fff'}} >{ '三'}</Text>
+                    <Text style={{color: '#fff',fontSize: 30}} >{ '三'}</Text>
                 </TouchableOpacity>
             )
         }

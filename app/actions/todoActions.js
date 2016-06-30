@@ -23,16 +23,10 @@ export const VisibilityFilters = {
     SHOW_ALL: 'SHOW_ALL',
     SHOW_COMPLETED: 'SHOW_COMPLETED',
     SHOW_ACTIVE: 'SHOW_ACTIVE',
-    CURRENT_TODOS: 'CURRENT_TODOS'
+    TODAY_TODOS: 'TODAY_TODOS'
 };
 
-/*
- * action 创建函数
- */
 
-
-
-//todo
 export function addTodo(content) {
     return { type: ADD_TODO, content};
 }
@@ -45,7 +39,6 @@ export function removeTodo() {
 export function markTodo(index) {
     return { type: MARK_TODO, index};
 }
-
 export function newInputValue(content) {
     return { type: SET_INPUT_VALUE, content };
 }
@@ -70,7 +63,6 @@ export function completeTodo(index) {
 export function markSwitch(index){
     return { type: MARK_SWITCH, index };
 }
-
 export function setVisibilityFilter(filter) {
     return { type: SET_VISIBILITY_FILTER, filter };
 }
