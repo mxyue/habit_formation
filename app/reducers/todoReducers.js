@@ -18,9 +18,11 @@ import {
     SWITCH_CONTENT_VIEW,
     EDIT_INPUT_VALUE,
     SET_INTERVAL_DAY,
+    SET_INITIAL_DATE,
+    CLEAR_TODOS,
     VisibilityFilters } from '../actions/todoActions';
 const { TODAY_TODOS } = VisibilityFilters;
-import {filterMarkTodos,resetMarks,theDayTodos} from './handles/todoHandle'
+import {filterMarkTodos,resetMarks,todoIndexById, updateTodo} from './handles/todoHandle'
 
 function visibilityFilter(state = TODAY_TODOS, action) {
     switch (action.type) {
@@ -32,82 +34,55 @@ function visibilityFilter(state = TODAY_TODOS, action) {
 }
 
 function todos(state = [], action) {
+
+
     switch (action.type) {
         case ADD_TODO:
-            return [ {
+            return [{
+                id: Date.now(),
                 content: action.content,
                 completed: false,
                 beMark: false,
-                switchValue: false,
+                timeSwitch: false,
                 time: 0,
                 dateMode: 'day',
-                intervalDay: 1,
+                intervalDay: 0,
                 createdAt: Date.now(),
-                initialDate: (new Date()).setHours(0,0,0,0)
+                initialDate: (new Date()).setHours(0,0,0,0),
+                remindTime: [0,0],
+                beDeleted: false
             },...state];
         case MARK_TODO:
-            return [
-                ...state.slice(0, action.index),
-                Object.assign({}, state[action.index], {
-                    beMark: true
-                }),
-                ...state.slice(action.index + 1)
-            ];
+            return updateTodo(state,action.id,'beMark',true);
+
         case COMPLETE_TODO:
-            return [
-                ...state.slice(0, action.index),
-                Object.assign({}, state[action.index], {
-                    completed: true
-                }),
-                ...state.slice(action.index + 1)
-            ];
+            return updateTodo(state,action.id,'completed',true);
+
         case MARK_SWITCH:
-            return [
-                ...state.slice(0, action.index),
-                Object.assign({}, state[action.index], {
-                    beMark: !state[action.index].beMark
-                }),
-                ...state.slice(action.index + 1)
-            ];
+            return updateTodo(state,action.id,'beMark');
+
         case RESET_MARKS:
             return resetMarks(state)
         case SWITCH_BTN:
-            return [
-                ...state.slice(0,action.index),
-                Object.assign({}, state[action.index],{
-                    switchValue: action.boo
-                }),
-                ...state.slice(action.index+1)
-            ];
+            return updateTodo(state,action.id,'timeSwitch',action.boo);
+
         case REMOVE_TODO:
             return filterMarkTodos(state);
 
         case TIME_GO:
-            return [
-                ...state.slice(0,action.index),
-                Object.assign({}, state[action.index],{
-                    time: action.num
-                }),
-                ...state.slice(action.index+1)
-            ];
-        case THE_DATE_TODOS:
-            return theDayTodos(state,action.date);
+            return updateTodo(state,action.id,'time',action.num);
+
         case SET_TODO_CONTENT:
-            return [
-                ...state.slice(0, action.index),
-                Object.assign({}, state[action.index], {
-                    content: action.content
-                }),
-                ...state.slice(action.index + 1)
-            ];
+            return updateTodo(state,action.id,'content',action.content);
+
         case SET_INTERVAL_DAY:
-            return [
-                ...state.slice(0, action.index),
-                Object.assign({}, state[action.index], {
-                    intervalDay: action.day
-                }),
-                ...state.slice(action.index + 1)
-            ];
+            return updateTodo(state,action.id,'intervalDay',action.day);
+
+        case SET_INITIAL_DATE:
+            return updateTodo(state,action.id,'initialDate',action.timestamps);
+
+        case CLEAR_TODOS:
+            return []
         default:
             return state;
     }

@@ -15,6 +15,8 @@ export const SET_TODO_CONTENT = 'SET_TODO_CONTENT';
 export const SWITCH_CONTENT_VIEW = 'SWITCH_CONTENT_VIEW';
 export const EDIT_INPUT_VALUE = 'EDIT_INPUT_VALUE';
 export const SET_INTERVAL_DAY = 'SET_INTERVAL_DAY';
+export const SET_INITIAL_DATE = 'SET_INITIAL_DATE';
+export const CLEAR_TODOS = 'CLEAR_TODOS';
 /*
  * 其它的常量
  */
@@ -30,20 +32,20 @@ export const VisibilityFilters = {
 export function addTodo(content) {
     return { type: ADD_TODO, content};
 }
-export function setTodoContent(index,content){
-    return { type: SET_TODO_CONTENT, index, content};
+export function setTodoContent(id,content){
+    return { type: SET_TODO_CONTENT, id, content};
 }
 export function removeTodo() {
     return { type: REMOVE_TODO};
 }
-export function markTodo(index) {
-    return { type: MARK_TODO, index};
+export function markTodo(id) {
+    return { type: MARK_TODO, id};
 }
 export function newInputValue(content) {
     return { type: SET_INPUT_VALUE, content };
 }
-export function switchBtn(index,boo){
-    return { type: SWITCH_BTN,index , boo}
+export function switchBtn(id,boo){
+    return { type: SWITCH_BTN,id , boo}
 }
 export function switchMode(boo){
     return { type: SWITCH_MODE,boo}
@@ -54,21 +56,29 @@ export function switchContentView(boo){
 export function resetMarks(){
     return { type: RESET_MARKS}
 }
-export function timeGo(index,num){
-    return { type: TIME_GO, index,num}
+export function timeGo(id,num){
+    return { type: TIME_GO, id,num}
 }
-export function completeTodo(index) {
-    return { type: COMPLETE_TODO, index };
+export function completeTodo(id) {
+    console.log(`action complate todo id: ${id}`)
+    return { type: COMPLETE_TODO, id };
 }
-export function markSwitch(index){
-    return { type: MARK_SWITCH, index };
+export function markSwitch(id){
+    return { type: MARK_SWITCH, id };
 }
 export function setVisibilityFilter(filter) {
     return { type: SET_VISIBILITY_FILTER, filter };
 }
-export function setIntervalDay(index,day){
-    return { type: SET_INTERVAL_DAY,index, day}
+export function setIntervalDay(id,day){
+    return { type: SET_INTERVAL_DAY,id, day}
 }
-export function setEditInputValue(index, content){
-    return { type: EDIT_INPUT_VALUE, index, content}
+export function setEditInputValue(id, content){
+    return { type: EDIT_INPUT_VALUE, id, content}
+}
+export function setInitialDate(id, timestamps){
+    return { type: SET_INITIAL_DATE, id, timestamps}
+}
+
+export function clearTodos(){
+    return {type: CLEAR_TODOS}
 }

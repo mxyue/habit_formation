@@ -5,7 +5,8 @@ import {
     Text,
     View,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    AsyncStorage
 } from 'react-native'
 import {VisibilityFilters} from '../actions/todoActions'
 
@@ -35,6 +36,10 @@ export default class SlideMenu extends Component{
                 <TouchableOpacity  style={{backgroundColor: '#efefef', height: 40}}
                     onPress={()=>this.setFilter(VisibilityFilters.SHOW_COMPLETED)} >
                     <Text>已完成的</Text>
+                </TouchableOpacity>
+                <TouchableOpacity  style={{backgroundColor: '#ffe', height: 40}}
+                                   onPress={()=> {this.props.clearTodos(); AsyncStorage.clear(alert('清除成功')) }} >
+                    <Text>清除所有数据</Text>
                 </TouchableOpacity>
             </View>
         </View>)

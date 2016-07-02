@@ -10,15 +10,23 @@ import  {
 export default class AddTodo extends  Component{
     constructor(prop){
         super(prop)
+        this.state={
+            inputFocus: false
+        }
     }
     render(){
         return(
-            <View style={styles.input_box}>
+            <View style={[styles.input_box,{ backgroundColor: ( this.state.inputFocus ? '#fff' : '#efefef') }]}>
                 <TextInput onChangeText={text=>this.setValue(text)}
+                           ref={(ref)=>this._textInput=ref}
                            value={this.props.inputValue}
-                           onSubmitEditing = {this.handleClick }
+                           onSubmitEditing = {()=>{this.handleClick();this._textInput.blur() }}
+                           blurOnSubmit = {true}
                            underlineColorAndroid='transparent'
                            style={{flex: 4, height: 45}}
+                           maxLength={70}
+                           onFocus={()=>this.setState({inputFocus: true})}
+                           onBlur={()=>this.setState({inputFocus: false})}
                 />
             </View>
 

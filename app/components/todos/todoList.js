@@ -34,10 +34,10 @@ export default class TodoList extends  Component {
     }
 
     timeInc = ()=> {
-        this.props.todos.forEach((ele, id, arr)=> {
-            if (ele.switchValue) {
+        this.props.todos.forEach((ele)=> {
+            if (ele.timeSwitch) {
                 let num = ele.time + 1;
-                this.props.timeGo(id, num)
+                this.props.timeGo(ele.id, num)
             }
         })
     }
@@ -55,16 +55,14 @@ export default class TodoList extends  Component {
             return <View><Text>还没有任务</Text></View>
         }
     }
-    todoItem=(todo,sectionID,rowID) =>{
-        rowID = Number(rowID)
+    todoItem=(todo) =>{
         return(
             <TodoItem {...todo}
                 key={todo.id}
-                index={rowID}
-                switchBtn={(index,text)=>this.props.switchBtn(index,text)}
-                onClickCheckbox={(index)=> this.props.onClickCheckbox(index)}
-                onClick={(index) => this.props.onTodoClick(index)}
-                onLongClick={(index)=> this.props.onTodoLongClick(index)}
+                switchBtn={(text)=>this.props.switchBtn(todo.id,text)}
+                onClickCheckbox={()=> this.props.onClickCheckbox(todo.id)}
+                onClick={() => this.props.onTodoClick(todo)}
+                onLongClick={()=> this.props.onTodoLongClick(todo.id)}
             />)
     }
 

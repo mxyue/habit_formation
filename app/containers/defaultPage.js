@@ -12,11 +12,11 @@ import  {
 import { connect } from 'react-redux'
 import Drawer from 'react-native-drawer'
 import SlideMenu from './slideMenu'
-import ScrollTabPage from './scrollTabPage'
+import TodoApp from './todoApp';
 import TransparentLayer from '../components/base/transparentLayer'
 var dispatch;
 import {
-    setVisibilityFilter
+    setVisibilityFilter,clearTodos
 } from '../actions/todoActions'
 
 export default class DefaultPage extends Component {
@@ -49,14 +49,15 @@ export default class DefaultPage extends Component {
                         this.props.dispatch(setVisibilityFilter(filter));
                         this.onDrawerClose()
                     }}
+                    clearTodos = { ()=> this.props.dispatch(clearTodos())}
                 />}
                 tapToClose={true}
                 openDrawerOffset={200}
                 onClose={this.onDrawerClose}
             >
-                <ScrollTabPage
-                    navigator={this.props.navigator}
-                    openDrawer = {this.openDrawer}
+
+                <TodoApp navigator={this.props.navigator}
+                         openDrawer={this.openDrawer}
                 />
                 {tLayer}
             </Drawer>

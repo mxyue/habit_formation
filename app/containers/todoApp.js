@@ -19,6 +19,7 @@ import { addTodo, completeTodo,
     switchContentView,
     setEditInputValue,
     setIntervalDay,
+    setInitialDate,
     VisibilityFilters } from '../actions/todoActions';
 import EditBar from '../components/todos/editBar'
 import AddTodo from '../components/todos/addTodo'
@@ -33,20 +34,20 @@ class TodoApp extends  Component {
         dispatch = this.props.dispatch
     }
 
-    navTodoShow=(todo,index)=>{
-
+    navTodoShow=(todo)=>{
         this.props.navigator.push({
             name: 'TodoShow',
             component: TodoShow,
             passProps: {
                 todo: todo,
-                setTodoContent: (content)=>dispatch(setTodoContent(index, content)),
-                setIntervalDay: (day)=>dispatch(setIntervalDay(index, day))
+                setTodoContent: (content)=>dispatch(setTodoContent(todo.id, content)),
+                setIntervalDay: (day)=>dispatch(setIntervalDay(todo.id, day)),
+                setInitialDate: (timestamps)=>dispatch(setInitialDate(todo.id, timestamps))
             }
         })
     };
     render() {
-        const {  visibleTodos,inputValue,editMode,visibilityFilter } = this.props;
+        const {  visibleTodos,inputValue,editMode,visibilityFilter,allTodos } = this.props;
         return (
                 <View style={{flex:1, backgroundColor: '#fff'}}>
 
@@ -81,18 +82,19 @@ class TodoApp extends  Component {
                 />
                 <TodoList
                     todos={visibleTodos}
-                    switchBtn={(index,boo)=>dispatch(switchBtn(index,boo))}
-                    timeGo={(index,num)=>dispatch(timeGo(index,num))}
-                    onClickCheckbox={index=>dispatch(completeTodo(index))}
-                    onTodoClick={index => {
+                    switchBtn={(id,boo)=>dispatch(switchBtn(id,boo))}
+                    timeGo={(id,num)=>dispatch(timeGo(id,num))}
+                    onClickCheckbox={id=>dispatch(completeTodo(id))}
+                    onTodoClick={(todo) => {
+
                         if(editMode) {
-                            dispatch(markSwitch(index))
+                            dispatch(markSwitch(todo.id))
                         }else{
-                            this.navTodoShow(visibleTodos[index],index)
+                            this.navTodoShow(todo)
                         }
                     }}
-                    onTodoLongClick={index=> {
-                        dispatch(markTodo(index));
+                    onTodoLongClick={id=> {
+                        dispatch(markTodo(id));
                         dispatch(switchMode(true))
                         }
                     }
@@ -103,17 +105,22 @@ class TodoApp extends  Component {
 }
 
 function selectTodos(todos, filter) {
+    var revTodos = todos.filter(function(ele){
+        return( ele.beDeleted === false)
+    });
     switch (filter) {
         case VisibilityFilters.SHOW_ALL:
-            return todos
+            return revTodos
         case VisibilityFilters.SHOW_COMPLETED:
-            return todos.filter(todo => todo.completed);
+            return revTodos.filter(todo => todo.completed);
         case VisibilityFilters.SHOW_ACTIVE:
-            return todos.filter(todo => !todo.completed);
+            return revTodos.filter(todo => !todo.completed);
         case VisibilityFilters.TODAY_TODOS:
             var nowDate = (new Date()).setHours(0,0,0,0);
-            return todos.filter(todo => {
-                return (todo.initialDate == nowDate || (nowDate - todo.initialDate)%(todo.intervalDay)==0)  && !todo.completed
+            return revTodos.filter(todo => {
+                return (todo.initialDate === nowDate ||
+                    (nowDate - todo.initialDate)/(1000*60*60*24)%(todo.intervalDay)===0)
+                    && !todo.completed && todo.initialDate <=  nowDate
             })
     }
 }
@@ -121,6 +128,7 @@ function selectTodos(todos, filter) {
 
 
 export default connect(state => ({
+    allTodos: state.todos,
     visibleTodos: selectTodos(state.todos, state.visibilityFilter),
     visibilityFilter: state.visibilityFilter,
     inputValue: state.inputValue,

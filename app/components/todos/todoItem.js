@@ -16,7 +16,7 @@ export default class TodoItem extends Component{
     }
 
     render(){
-        const {switchBtn, switchValue,onClickCheckbox,onClick,onLongClick,index,content, time, completed, beMark} = this.props
+        const {switchBtn, timeSwitch,onClickCheckbox,onClick,onLongClick,id,content, time, completed, beMark} = this.props
         checkboxInside = ''
         if(completed) {
             checkboxInside = <View style={styles.cbEnabled} ></View>
@@ -28,13 +28,13 @@ export default class TodoItem extends Component{
                 <View style={styles.left_box}>
 
                     <TouchableHighlight style={styles.checkbox}
-                        underlayColor="#efefef" onPress={()=>onClickCheckbox(index) }
+                        underlayColor="#efefef" onPress={()=>onClickCheckbox() }
                     >
                         {checkboxInside}
                     </TouchableHighlight>
                     <TouchableOpacity style={styles.textContent}
-                        onLongPress={()=>onLongClick(index)}
-                                      onPress={()=>onClick(index)}
+                            onLongPress={()=>onLongClick()}
+                            onPress={()=>onClick()}
                     >
                        <View>
                            <Text>{content}</Text>
@@ -46,8 +46,8 @@ export default class TodoItem extends Component{
                     <View style={styles.timeBox} ><Text style={styles.time} >{time} s</Text></View>
 
                     <Switch
-                        onValueChange={boo=>switchBtn(index,boo)}
-                        value={switchValue}
+                        onValueChange={boo=>switchBtn(boo)}
+                        value={timeSwitch}
                     />
                 </View>
             </View>

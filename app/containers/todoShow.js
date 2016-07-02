@@ -11,7 +11,8 @@ import {
     TextInput,
     Slider,
 } from 'react-native'
-import {fTimestamp} from '../components/helpers/timeFormat'
+import {fTimestamp,fTimestampToDate,fTimestampToDateLin} from '../components/helpers/timeFormat'
+import DatePicker from 'react-native-datepicker';
 
 export default class TodoShow extends  Component{
     constructor(props){
@@ -19,7 +20,8 @@ export default class TodoShow extends  Component{
         this.state = {
             todo: this.props.todo,
             inputValue: this.props.todo.content,
-            sliderValue: this.props.todo.intervalDay
+            sliderValue: this.props.todo.intervalDay,
+            date: fTimestampToDateLin(this.props.todo.initialDate)
         }
     }
     componentDidUpdate(){
@@ -30,10 +32,15 @@ export default class TodoShow extends  Component{
         this.props.navigator.pop()
     };
 
-
     changeInputText=(text)=>{
         this.setState({inputValue: text})
-    }
+    };
+
+    setInitialDate=(date)=>{
+        var timestamp = new Date(date.replace(/-/g,   "/")).getTime();
+        this.props.setInitialDate(timestamp);
+        this.setState({date: date});
+    };
 
     render(){
         const {todo,inputValue } = this.state;
@@ -62,19 +69,30 @@ export default class TodoShow extends  Component{
 
                     </View>
                     <View style={{flex: 1, flexDirection: 'row',height: 30}} >
-                        <TouchableOpacity
-                        ><Text>间隔</Text></TouchableOpacity>
-
-                        <Text>,创建时间: { fTimestamp(todo.createdAt)}</Text>
+                        <Text>创建时间: { fTimestamp(todo.createdAt)}</Text>
+                    </View>
+                    <View style={{flex: 1, flexDirection: 'row',height: 30}} >
+                        <Text>开始提醒日期: { fTimestampToDate(todo.initialDate)}</Text>
+                        <Text>,提醒时间 { todo.remindTime[0]}:{todo.remindTime[1]}</Text>
                     </View>
                     <View>
-                        <Text >
+                        <DatePicker
+                            style={{width: 200}}
+                            date={this.state.date}
+                            mode="date"
+                            confirmBtnText="确定"
+                            onDateChange={(date) => {this.setInitialDate(date)}}
+                        />
+                        <Text >date: {this.state.date}</Text>
+                    </View>
+
+                    <View>
+                        <Text>
                             原来间隔{todo.intervalDay}天,当前间隔 {this.state.sliderValue}天
                         </Text>
                         <Slider
                             value={todo.intervalDay}
                             step={1}
-                            minimumValue={1}
                             maximumValue={30}
                             onValueChange={(value) => this.setState({sliderValue: value})}
                             onSlidingComplete={(value) => this.props.setIntervalDay(value)}
