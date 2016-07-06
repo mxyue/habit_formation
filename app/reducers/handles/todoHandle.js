@@ -42,11 +42,29 @@ module.exports = {
                 }else if(column === 'completed'){
                     ele['timeSwitch'] = false;
                     ele[column] = !ele[column]
+                }else if(column === 'time'){
+                    let lastCalIndex = ele['calendars'].length - 1;
+                    if(ele['newTimes']){
+                        if( lastCalIndex != -1 && ele['calendars'][lastCalIndex]['date'] == (new Date()).setHours(0,0,0,0)){
+                            ele['calendars'][lastCalIndex]['counter'] += 1;
+                            ele['calendars'][lastCalIndex]['timeCounter'].push(1)
+                        }else{
+                            ele['calendars'].push({date: (new Date()).setHours(0,0,0,0), counter: 0, timeCounter: [1]})
+                        }
+                        ele['newTimes'] = false
+                    }else{
+                        let lastTCIndex = ele['calendars'][lastCalIndex]['timeCounter'].length - 1;
+                        ele['calendars'][lastCalIndex]['timeCounter'][lastTCIndex] += 1
+                    }
+                }else if(column === 'timeSwitch'){
+                    ele['timeSwitch'] = value;
+                    if(value) ele['newTimes'] = true
                 }else
                     ele[column] = value
             }
             return ele
         })
         return newTodos
-    }
+    },
+
 };

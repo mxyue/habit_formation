@@ -35,7 +35,6 @@ function visibilityFilter(state = TODAY_TODOS, action) {
 
 function todos(state = [], action) {
 
-
     switch (action.type) {
         case ADD_TODO:
             return [{
@@ -44,13 +43,16 @@ function todos(state = [], action) {
                 completed: false,
                 beMark: false,
                 timeSwitch: false,
+                newTimes: true,
                 time: 0,
                 dateMode: 'day',
                 intervalDay: 0,
                 createdAt: Date.now(),
                 initialDate: (new Date()).setHours(0,0,0,0),
                 remindTime: [0,0],
-                beDeleted: false
+                beDeleted: false,
+                mode: 'once',// times, timeAndTimes, once
+                calendars: []   //{date: 5-3, counter; 0, timeCounter: [20,40,45]}
             },...state];
         case MARK_TODO:
             return updateTodo(state,action.id,'beMark',true);
@@ -62,7 +64,7 @@ function todos(state = [], action) {
             return updateTodo(state,action.id,'beMark');
 
         case RESET_MARKS:
-            return resetMarks(state)
+            return resetMarks(state);
         case SWITCH_BTN:
             return updateTodo(state,action.id,'timeSwitch',action.boo);
 
@@ -82,7 +84,7 @@ function todos(state = [], action) {
             return updateTodo(state,action.id,'initialDate',action.timestamps);
 
         case CLEAR_TODOS:
-            return []
+            return [];
         default:
             return state;
     }

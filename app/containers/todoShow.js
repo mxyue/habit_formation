@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     TextInput,
     Slider,
+    ScrollView
 } from 'react-native'
 import {fTimestamp,fTimestampToDate,fTimestampToDateLin} from '../components/helpers/timeFormat'
 import DatePicker from 'react-native-datepicker';
@@ -41,6 +42,19 @@ export default class TodoShow extends  Component{
         this.props.setInitialDate(timestamp);
         this.setState({date: date});
     };
+    todoTimes = (calendars)=>{
+
+        return calendars.map(function(cal, index){
+            var totalTime = 0;
+            cal['timeCounter'].forEach(function(ele){
+                totalTime += ele
+            });
+
+            return(
+                <View key={index}><Text>日期:{new Date(cal['date']).toLocaleDateString()} 次数:{cal['counter']} 总共时间: {totalTime}s</Text></View>
+            )
+        })
+    }
 
     render(){
         const {todo,inputValue } = this.state;
@@ -83,7 +97,6 @@ export default class TodoShow extends  Component{
                             confirmBtnText="确定"
                             onDateChange={(date) => {this.setInitialDate(date)}}
                         />
-                        <Text >date: {this.state.date}</Text>
                     </View>
 
                     <View>
@@ -98,6 +111,7 @@ export default class TodoShow extends  Component{
                             onSlidingComplete={(value) => this.props.setIntervalDay(value)}
                         />
                     </View>
+                    {this.todoTimes(todo['calendars'])}
 
                 </View>
 

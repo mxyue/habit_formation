@@ -20,7 +20,12 @@ export default class AddTodo extends  Component{
                 <TextInput onChangeText={text=>this.setValue(text)}
                            ref={(ref)=>this._textInput=ref}
                            value={this.props.inputValue}
-                           onSubmitEditing = {()=>{this.handleClick();this._textInput.blur() }}
+                           onSubmitEditing = {()=>{
+                                if(this.props.inputValue > 0){
+                                    this.handleClick();
+                                    this._textInput.blur()
+                                }
+                           }}
                            blurOnSubmit = {true}
                            underlineColorAndroid='transparent'
                            style={{flex: 4, height: 45}}

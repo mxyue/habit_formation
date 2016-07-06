@@ -16,13 +16,14 @@ export default class TodoItem extends Component{
     }
 
     render(){
-        const {switchBtn, timeSwitch,onClickCheckbox,onClick,onLongClick,id,content, time, completed, beMark} = this.props
+        const {switchBtn, timeSwitch,onClickCheckbox,onClick,onLongClick,id,content, calendars, completed, beMark} = this.props
         checkboxInside = ''
         if(completed) {
             checkboxInside = <View style={styles.cbEnabled} ></View>
         }else{
             checkboxInside = <View style={styles.cbDisabled} ></View>
         }
+        var lastCalendar = calendars[calendars.length-1]
         return(
             <View style={beMark ? [styles.todo_box,styles.markTodo] : styles.todo_box }>
                 <View style={styles.left_box}>
@@ -43,7 +44,7 @@ export default class TodoItem extends Component{
 
                 </View>
                 <View style={styles.switch_box}>
-                    <View style={styles.timeBox} ><Text style={styles.time} >{time} s</Text></View>
+                    <View style={styles.timeBox} ><Text style={styles.time} >{lastCalendar['counter']}/{lastCalendar['timeCounter'][lastCalendar['timeCounter'].length-1]}s </Text></View>
 
                     <Switch
                         onValueChange={boo=>switchBtn(boo)}
