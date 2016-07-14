@@ -24,6 +24,8 @@ export default class TodoItem extends Component{
             checkboxInside = <View style={styles.cbDisabled} ></View>
         }
         var lastCalendar = calendars[calendars.length-1]
+        var counter = (typeof lastCalendar == 'undefined') ? 0 : lastCalendar['counter']
+        var lastTimeCounter = (typeof lastCalendar == 'undefined') ? 0 : lastCalendar['timeCounter'][lastCalendar['timeCounter'].length-1]
         return(
             <View style={beMark ? [styles.todo_box,styles.markTodo] : styles.todo_box }>
                 <View style={styles.left_box}>
@@ -44,7 +46,7 @@ export default class TodoItem extends Component{
 
                 </View>
                 <View style={styles.switch_box}>
-                    <View style={styles.timeBox} ><Text style={styles.time} >{lastCalendar['counter']}/{lastCalendar['timeCounter'][lastCalendar['timeCounter'].length-1]}s </Text></View>
+                    <View style={styles.timeBox} ><Text style={styles.time} >{counter}/{lastTimeCounter}s </Text></View>
 
                     <Switch
                         onValueChange={boo=>switchBtn(boo)}

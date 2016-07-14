@@ -49,7 +49,7 @@ module.exports = {
                             ele['calendars'][lastCalIndex]['counter'] += 1;
                             ele['calendars'][lastCalIndex]['timeCounter'].push(1)
                         }else{
-                            ele['calendars'].push({date: (new Date()).setHours(0,0,0,0), counter: 0, timeCounter: [1]})
+                            ele['calendars'].push({date: (new Date()).setHours(0,0,0,0), counter: 1, timeCounter: [1]})
                         }
                         ele['newTimes'] = false
                     }else{

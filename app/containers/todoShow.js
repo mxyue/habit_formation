@@ -14,6 +14,7 @@ import {
 } from 'react-native'
 import {fTimestamp,fTimestampToDate,fTimestampToDateLin} from '../components/helpers/timeFormat'
 import DatePicker from 'react-native-datepicker';
+import Calendar from '../components/base/calendar/calendar'
 
 export default class TodoShow extends  Component{
     constructor(props){
@@ -112,6 +113,7 @@ export default class TodoShow extends  Component{
                         />
                     </View>
                     {this.todoTimes(todo['calendars'])}
+                    <Calendar calendars={ todo['calendars'] } />
 
                 </View>
 
