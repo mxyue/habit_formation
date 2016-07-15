@@ -14,8 +14,9 @@ import styles from './calendarStyle'
 
 export default class Day extends Component{
     render(){
+        var dateStyle = this.props.didDate ? {borderColor: 'green'} : {borderColor: '#efefef'};
         return(
-            <View style={ [styles.dayBorder, { borderColor: '#efefef'}]  }>
+            <View style={ [styles.dayBorder, dateStyle ]  }>
                 <Text  >{this.props.dayText}</Text>
             </View>
         )

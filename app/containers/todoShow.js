@@ -19,11 +19,14 @@ import Calendar from '../components/base/calendar/calendar'
 export default class TodoShow extends  Component{
     constructor(props){
         super(props);
+        var current_date = new Date();
         this.state = {
             todo: this.props.todo,
             inputValue: this.props.todo.content,
             sliderValue: this.props.todo.intervalDay,
-            date: fTimestampToDateLin(this.props.todo.initialDate)
+            date: fTimestampToDateLin(this.props.todo.initialDate),
+            year: current_date.getFullYear(),
+            month: current_date.getMonth()+1,
         }
     }
     componentDidUpdate(){
@@ -44,23 +47,40 @@ export default class TodoShow extends  Component{
         this.setState({date: date});
     };
     todoTimes = (calendars)=>{
-
         return calendars.map(function(cal, index){
             var totalTime = 0;
             cal['timeCounter'].forEach(function(ele){
                 totalTime += ele
             });
-
             return(
                 <View key={index}><Text>日期:{new Date(cal['date']).toLocaleDateString()} 次数:{cal['counter']} 总共时间: {totalTime}s</Text></View>
             )
         })
-    }
+    };
+    prevMonth = ()=>{
+        if(this.state.month >= 2 ){
+            this.setState({month: this.state.month -1})
+        }else{
+            this.setState({year: this.state.year-1,month: 12})
+        }
+    };
+    nextMonth = ()=>{
+        if(this.state.month <= 11){
+            this.setState({month: this.state.month + 1})
+        }else{
+            this.setState({year: this.state.year+1, month: 1})
+        }
+    };
 
     render(){
         const {todo,inputValue } = this.state;
-        console.log(todo)
-
+        var year = this.state.year;
+        var month = this.state.month;
+        var monthStart = new Date(year, month-1, 1).getTime();
+        var monthEnd = new Date(year, month, 0).getTime();
+        var currentMonthTodos = todo['calendars'].filter((ele)=>{
+            return ele.date > monthStart && ele.date <= monthEnd
+        })
         return  (
             <View style={{backgroundColor: '#fafafa',flex: 1, }}>
                 <View style={styles.header} >
@@ -113,7 +133,12 @@ export default class TodoShow extends  Component{
                         />
                     </View>
                     {this.todoTimes(todo['calendars'])}
-                    <Calendar calendars={ todo['calendars'] } />
+                    <Calendar calendars={ currentMonthTodos }
+                              year = {year}
+                              month = {month}
+                              prevMonth = {()=> this.prevMonth}
+                              nextMonth = {()=>this.nextMonth}
+                    />
 
                 </View>
 
